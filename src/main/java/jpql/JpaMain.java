@@ -27,17 +27,26 @@ public class JpaMain {
             member.setUsername("teamA");
             member.setAge(10);
             member.setTeam(team);
+            member.setType(MemberType.USER);
 
             em.persist(member);
 
             em.flush();
             em.clear();
 
-            String query = "select m from Member m, Team t where m.username = t.name";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .getResultList();
+            String query = "select m.username, 'HELLO', TRUE from Member m " +
+                    "where m.type = :userType";
 
-            System.out.println("result = " + result.size());
+            List<Object[]> result = em.createQuery(query)
+                    .setParameter("userType", MemberType.ADMIN)
+                    .getResultList();
+            
+            for (Object[] objects : result) {
+                System.out.println("objects = " + objects[0]);
+                System.out.println("objects = " + objects[1]);
+                System.out.println("objects = " + objects[2]);
+            }
+
             tx.commit();
 
         } catch (Exception e) {

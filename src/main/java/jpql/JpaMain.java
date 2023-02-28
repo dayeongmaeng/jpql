@@ -47,13 +47,11 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select distinct t from Team t join t.members";
-            List<Team> result = em.createQuery(query, Team.class).getResultList();
-
-            for (Team team : result) {
-                System.out.println(
-                        "team = " + team.getName() + " |members = " + team.getMembers().size());
-            }
+            String query = "select m from Member m where m.team  = :team";
+            List<Member> result = em.createQuery(query, Member.class)
+                    .setParameter("team", teamA)
+                    .getResultList();
+            System.out.println("result.size() = " + result.size());
 
             tx.commit();
 

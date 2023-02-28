@@ -44,14 +44,12 @@ public class JpaMain {
             member3.setTeam(teamB);
             em.persist(member3);
 
-            em.flush();
-            em.clear();
+            String query = "update Member m set m.age = 20";
+            int i = em.createQuery("update Member m set m.age = 20").executeUpdate();
 
-            String query = "select m from Member m where m.team  = :team";
-            List<Member> result = em.createNamedQuery("Member.findByUsername", Member.class)
-                    .setParameter("username", "회원1")
-                    .getResultList();
-            System.out.println("result.size() = " + result.size());
+            em.clear();
+            Member member = em.find(Member.class, member1.getId());
+            System.out.println("member = " + member.getAge());
 
             tx.commit();
 

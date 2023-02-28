@@ -48,8 +48,8 @@ public class JpaMain {
             em.clear();
 
             String query = "select m from Member m where m.team  = :team";
-            List<Member> result = em.createQuery(query, Member.class)
-                    .setParameter("team", teamA)
+            List<Member> result = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "회원1")
                     .getResultList();
             System.out.println("result.size() = " + result.size());
 
